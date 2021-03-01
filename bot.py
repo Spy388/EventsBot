@@ -1,64 +1,133 @@
-import config
-import logging
-import discord
-import asyncio
-from BotClass import Bot
-from commands.Help import Help
-from commands.GetStarted import GetStarted
-from commands.Setup import Setup
-from commands.Calendar import Calendar
-from commands.ServerInfo import ServerInfo
+config.py
+*.db
+*.db-journal
+.vscode
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
 
-logging.basicConfig(level=logging.INFO)
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
 
-# Create instance of the bot
-print("=================================")
-print("Initializing Bot and Managers...")
-bot = Bot()
-print("=================================")
+# C extensions
+*.so
 
-# =====================
-#   Register commands
-# =====================
-print("Successfully registered commands:")
-bot._commandsManager.register_static_command( Setup )
-bot._commandsManager.register_static_command( ServerInfo )
-bot._commandsManager.register_command( Help )
-bot._commandsManager.register_command( GetStarted )
-bot._commandsManager.register_command( Calendar )
-print("=================================")
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
-# ==================
-#   Discord events
-# ==================
-@bot._client.event
-async def on_ready():
-    print("Bot user: {0.user}".format(bot._client))
-    # start periodic check loop
-    # https://discordpy.readthedocs.io/en/latest/ext/tasks/index.html
-    bot.periodic_update_calendars.start()
-    bot.periodic_clean_db.start()
-    # update bot's game status
-    game = discord.Game("calbot.patrikpapso.com")
-    await bot._client.change_presence(status=discord.Status.online, activity=game)
-    print("=================================")
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
 
-@bot._client.event
-async def on_resumed():
-    print("Bot user: {0.user} RESUMED".format(bot._client))
-    # start periodic check loop
-    # https://discordpy.readthedocs.io/en/latest/ext/tasks/index.html
-    bot.periodic_update_calendars.start()
-    bot.periodic_clean_db.start()
-    # update bot's game status
-    game = discord.Game("calbot.patrikpapso.com")
-    await bot._client.change_presence(status=discord.Status.online, activity=game)
-    print("==========RESUMED==========")
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
 
-@bot._client.event
-async def on_message(message):
-    if message.author != bot._client.user:
-        await bot._commandsManager.process_message(message)
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
 
-# run the discord client
-bot.run_client(config.bot['token'])
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
+#   However, in case of collaboration, if having platform-specific dependencies or dependencies
+#   having no cross-platform support, pipenv may install dependencies that don't work, or not
+#   install all needed dependencies.
+#Pipfile.lock
+
+# PEP 582; used by e.g. github.com/David-OConnor/pyflow
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
